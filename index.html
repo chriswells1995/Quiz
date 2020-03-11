@@ -15,15 +15,22 @@
   <body>
       
 <h1>Coding quiz</h1>
-<h2 id="Q">Question</h2>
-<h2 id="timer"></h2>
-<button id="start">Start</button>
-<button id="A">A</button>
+<h2 id="Q">Questions will appear here</h2>
+<h2 id="timer">30</h2>
+<button id="start">Start</button><br>
+<button id="A">A</button><br>
 
-<button id="B">B</button>
-<button id="C">C</button>
+<button id="B">B</button><br>
+<button id="C">C</button><br>
 <button id="D">D</button>
 <p id="wrong"></p>
+<div id="end">
+    <form id="end-form" method="POST">
+        <label for="end-text">High Score List</label>
+        <input type="text" placeholder="Type Your Initials (3 characters max)" name="end-text" id="end-text" />
+      </form>
+      <ul id="end-list"></ul>
+</div>
 
 
 

@@ -64,20 +64,23 @@ var Qs=[Q1,Q2,Q3,Q4,Q5];
 var counter=0;
 var time=3000;
 var current;
+var penalty;
+var secondsLeft=30;
+var score=0;
 
+// Dynamic Functions
 
-function setTime(secondsLeft) {
-    clearInterval();
+function setTime() {
+   
     timerInterval = setInterval(function() {
       // this is a minus minus, removing one each interval
       secondsLeft--;
       current=secondsLeft;
       $("#timer").text(secondsLeft)
   
-      if(secondsLeft === 0) {
+      if(secondsLeft < 1) {
         // stops the time
-        clearInterval(timerInterval);
-        
+        endScreen();
       }
   
       // this is 1000 milleseconds
@@ -85,21 +88,153 @@ function setTime(secondsLeft) {
   }
 
 
+function penalize(){
+    secondsLeft=secondsLeft-5;
+    console.log("penal")
+
+
+}
+
+
+function endScreen(){
+
+    $("#wrong").append("        Your final score is ", score, " out of 5")
+    clearInterval(timerInterval);
+
+}
+
+// function postInitials(){
+var endForm=document.querySelector("#end-form")
+var endInput=document.querySelector("#end-text")
+var endList = document.querySelector("#end-list");
+
+// make initials bar appear
+
+// When form is submitted...
+// endForm.addEventListener("submit", function(event) {
+//     event.preventDefault();
+  
+//     var endText = endInput.value.trim();
+
+//       // Return from function early if submitted initials are blank
+//   if (endText === "") {
+//     return;
+//   }
+
+//   var initials=[]
+//   initials.push(endText)
+
+// })
+
+var initials=[]
+endForm.addEventListener("submit", function(event){
+    event.preventDefault();
+    var endText = endInput.value
+
+      // Return from function early if submitted initials are blank
+  if (endText === "") {
+    return;
+  }
+
+  
+  initials.push(endText)
+console.log("initials array "+ initials)
+
+
+endList.innerHTML = "";
+  // Render a new li for each set of initials
+  for (var i = 0; i < initials.length; i++) {
+    var initial = initials[i];
+
+    var li = document.createElement("li");
+    li.textContent = (initial + "   "+ score);
+    endList.appendChild(li);
+  }
+
+
+
+})
+
+// }
+// postInitials();
+
+
+// Answer Functions
+
+// A (The correct answer) function
+ function answerA(){
+  console.log("A Click")
+counter++
+        
+        console.log("COUNTER " +counter) 
+
+        if (counter === 5){
+            // show end screen
+            endScreen();
+            return;
+        }
+        if (counter > 5){
+
+            return;
+        }
+        $("#wrong").text("Correct!")
+
+        score++
+        object=Qs[counter]
+
+        $("#Q").text(object.question)
+        console.log("pls "+object.question)
+        console.log(object.answers[0])
+        $("#A").text(object.answers[0])
+        $("#B").text(object.answers[1])
+        $("#C").text(object.answers[2])
+        $("#D").text(object.answers[3])
+        
+        }
+    
+
+// B (the wrong answer) function
+function AnswerB(){
+object=Qs[counter]
+counter++
+
+
+
+
+if (counter === 5){
+    // show end screen
+    endScreen();
+
+    return;
+}
+
+if (counter > 5){
+
+    return;
+}
+$("#wrong").text("Wrong!")
+
+object=Qs[counter]
+penalize()
+$("#Q").text(object.question)
+console.log(object.question)
+console.log(object.answers[0])
+$("#A").text(object.answers[0])
+$("#B").text(object.answers[1])
+$("#C").text(object.answers[2])
+$("#D").text(object.answers[3])
+
+}
 
 
 
 
 
-
-
-
-
-
-
+// START event listener
 $("#start").on("click", function (){
     object=Qs[counter]
-    counter++
-  setTime(30);
+    
+  setTime();
     if (counter > 4){
         // show end screen
         return;
@@ -115,85 +250,96 @@ $("#start").on("click", function (){
     }
 )
 
+// Event listeners for each button
+$("#A").on("click", answerA)
+$("#B").on("click", AnswerB)
+$("#C").on("click", AnswerB)
+$("#D").on("click", AnswerB)
 
-$("#A").on("click", function (){
   
-    object=Qs[counter]
-    counter++
-    $("#wrong").text("Correct!")
-    if (counter > 4){
-        // show end screen
-        return;
-    }
+//     object=Qs[counter]
+//     counter++
+//     $("#wrong").text("Correct!")
+//     if (counter > 4){
+//         // show end screen
+//         return;
+//     }
 
-    $("#Q").text(object.question)
-    console.log(object.question)
-    console.log(object.answers[0])
-    $("#A").text(object.answers[0])
-    $("#B").text(object.answers[1])
-    $("#C").text(object.answers[2])
-    $("#D").text(object.answers[3])
-    }
-)
-$("#B").on("click", function (){
-    object=Qs[counter]
-    counter++
+//     $("#Q").text(object.question)
+//     console.log(object.question)
+//     console.log(object.answers[0])
+//     $("#A").text(object.answers[0])
+//     $("#B").text(object.answers[1])
+//     $("#C").text(object.answers[2])
+//     $("#D").text(object.answers[3])
+//     }
+// )
 
-    $("#wrong").text("Wrong!")
+// $("#B").on("click", AnswerB)
 
-    if (counter > 4){
-        // show end screen
-        return;
-    }
 
-    $("#Q").text(object.question)
-    console.log(object.question)
-    console.log(object.answers[0])
-    $("#A").text(object.answers[0])
-    $("#B").text(object.answers[1])
-    $("#C").text(object.answers[2])
-    $("#D").text(object.answers[3])
-    }
-)
-$("#C").on("click", function (){
-    object=Qs[counter]
-    counter++
+// $("#B").on("click", function (){
+    // object=Qs[counter]
+    // counter++
+    // penalize()
 
-    $("#wrong").text("Wrong!")
+    // $("#wrong").text("Wrong!")
 
-    if (counter > 4){
-        // show end screen
-        return;
-    }
+    // if (counter > 4){
+    //     // show end screen
+    //     return;
+    // }
 
-    $("#Q").text(object.question)
-    console.log(object.question)
-    console.log(object.answers[0])
-    $("#A").text(object.answers[0])
-    $("#B").text(object.answers[1])
-    $("#C").text(object.answers[2])
-    $("#D").text(object.answers[3])
-    }
-)
-$("#D").on("click", function (){
-    object=Qs[counter]
-        counter++   
+    // $("#Q").text(object.question)
+    // console.log(object.question)
+    // console.log(object.answers[0])
+    // $("#A").text(object.answers[0])
+    // $("#B").text(object.answers[1])
+    // $("#C").text(object.answers[2])
+    // $("#D").text(object.answers[3])
+    // }
+// )
+
+// $("#C").on("click", function (){
+//     object=Qs[counter]
+//     counter++
+//     // setTime(penalty)
+
+//     $("#wrong").text("Wrong!")
+
+//     if (counter > 4){
+//         // show end screen
+//         return;
+//     }
+
+//     $("#Q").text(object.question)
+//     console.log(object.question)
+//     console.log(object.answers[0])
+//     $("#A").text(object.answers[0])
+//     $("#B").text(object.answers[1])
+//     $("#C").text(object.answers[2])
+//     $("#D").text(object.answers[3])
+//     }
+// )
+// $("#D").on("click", function (){
+//     object=Qs[counter]
+//         counter++   
      
-        $("#wrong").text("Wrong!")
-    if (counter > 4){
-        // show end screen
-        return;
-    }
+//         $("#wrong").text("Wrong!")
+//     if (counter > 4){
+//         // show end screen
+//         return;
+//     }
 
-    $("#Q").text(object.question)
-    console.log(object.question)
-    console.log(object.answers[0])
-    $("#A").text(object.answers[0])
-    $("#B").text(object.answers[1])
-    $("#C").text(object.answers[2])
-    $("#D").text(object.answers[3])
-    }
-)
+//     $("#Q").text(object.question)
+//     console.log(object.question)
+//     console.log(object.answers[0])
+//     $("#A").text(object.answers[0])
+//     $("#B").text(object.answers[1])
+//     $("#C").text(object.answers[2])
+//     $("#D").text(object.answers[3])
+//     }
+// )
 
 
 
@@ -201,6 +347,4 @@ $("#D").on("click", function (){
 // $("#A").on("click", ask(Q2))
 // $("#A").on("click", ask(Q3))
 // $("#A").on("click", ask(Q4))
-// $("#A").on("click", ask(Q5))
-
-
+// $("#A").on("click", ask(Q5)  
